@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Color Block Jam</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="game-header">
+            <div class="level-badge">LEVEL <span id="level-num">1</span></div>
+            <div class="timer-badge">TIME <span id="timer">03:00</span></div>
+            <div class="restart-btn" id="restart-btn">↻</div>
+        </header>
+
+        <div class="game-board-container">
+            <div id="game-board" class="game-board">
+                <!-- Grid cells and blocks will be generated here -->
+            </div>
+        </div>
+
+        <div class="controls-area">
+            <button class="action-btn" id="hint-btn">💡</button>
+            <button class="action-btn" id="hammer-btn">🔨</button>
+            <button class="action-btn" id="shuffle-btn">🔀</button>
+        </div>
+
+        <div class="bottom-cta">
+            <h1>CLEAR THE BOARD</h1>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

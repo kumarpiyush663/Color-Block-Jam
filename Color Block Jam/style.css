@@ -1,0 +1,236 @@
+:root {
+    --bg-color: #eef2f5;
+    --board-bg: #3a3f4b;
+    --cell-size: 50px;
+    --gap: 4px;
+    --primary-font: 'Outfit', sans-serif;
+    
+    /* Block Colors */
+    --color-red: #ff3b30;
+    --color-blue: #007aff;
+    --color-green: #34c759;
+    --color-yellow: #ffcc00;
+    --color-purple: #af52de;
+    --color-orange: #ff9500;
+    
+    /* Wall/Door Colors */
+    --wall-color: #2c2c2e;
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    font-family: var(--primary-font);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.game-header {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.level-badge {
+    background: #007aff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 900;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 0 #0056b3;
+}
+
+.timer-badge {
+    background: #3a3f4b;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.restart-btn {
+    background: #5ac8fa;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #3da0d1;
+}
+
+.restart-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.game-board-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.game-board {
+    background-color: var(--board-bg);
+    border-radius: 16px;
+    padding: 10px;
+    position: relative;
+    /* Grid layout will be set by JS based on level size */
+    display: grid;
+    gap: var(--gap);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+}
+
+/* Block Styles */
+.block {
+    position: absolute;
+    border-radius: 8px;
+    transition: transform 0.2s ease, left 0.1s, top 0.1s;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 4px 4px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    cursor: grab;
+}
+
+.block:active {
+    cursor: grabbing;
+    z-index: 10;
+}
+
+/* Lego Studs */
+.block::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(0,0,0,0.1) 15%, transparent 16%),
+                      radial-gradient(rgba(255,255,255,0.2) 15%, transparent 16%);
+    background-size: var(--cell-size) var(--cell-size);
+    background-position: 0 0, 2px 2px; /* Offset for 3D effect */
+    opacity: 0.8;
+}
+
+.block.red { background-color: var(--color-red); }
+.block.blue { background-color: var(--color-blue); }
+.block.green { background-color: var(--color-green); }
+.block.yellow { background-color: var(--color-yellow); }
+.block.purple { background-color: var(--color-purple); }
+.block.orange { background-color: var(--color-orange); }
+
+/* Doors/Walls */
+.wall {
+    position: absolute;
+    background-color: var(--wall-color);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.door {
+    position: absolute;
+    border-radius: 8px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.door::before {
+    content: '▼'; /* Arrow placeholder */
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+}
+
+.door.top::before { transform: rotate(180deg); }
+.door.bottom::before { transform: rotate(0deg); }
+.door.left::before { transform: rotate(90deg); }
+.door.right::before { transform: rotate(-90deg); }
+
+.door.red { background-color: var(--color-red); box-shadow: 0 0 10px var(--color-red); }
+.door.blue { background-color: var(--color-blue); box-shadow: 0 0 10px var(--color-blue); }
+.door.green { background-color: var(--color-green); box-shadow: 0 0 10px var(--color-green); }
+.door.yellow { background-color: var(--color-yellow); box-shadow: 0 0 10px var(--color-yellow); }
+.door.purple { background-color: var(--color-purple); box-shadow: 0 0 10px var(--color-purple); }
+.door.orange { background-color: var(--color-orange); box-shadow: 0 0 10px var(--color-orange); }
+
+.controls-area {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.action-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
+.bottom-cta {
+    background: #007aff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.bottom-cta h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 0 #0056b3;
+}
